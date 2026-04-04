@@ -296,11 +296,20 @@ export default function Home() {
     }, 1400)
 
     try {
-      const res = await fetch('/api/recommend', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ answers: updated, problem, language: lang }),
-      })
+      const res = await fetch('/api/chat', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({
+    messages: [
+      {
+        role: "user",
+        content: `User problem: ${problem}
+Answers: ${JSON.stringify(updated)}
+Language: ${lang}`
+      }
+    ]
+  }),
+})
       if (!res.ok) throw new Error(`HTTP ${res.status}`)
       const data = await res.json()
       clearInterval(iv)
